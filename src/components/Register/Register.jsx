@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import './Register.css'
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../Provider/AuthProvider';
 
 const Register = () => {
   let [error, setError] = useState(null);
+  let {signUp} = useContext(AuthContext);
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -24,6 +26,10 @@ const Register = () => {
     else{
       setError('')
     }
+
+    signUp(email, password)
+    .then(result => console.log(result))
+    .catch(err => setError(err))
 
   }
 
