@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import './Login.css'
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { AuthContext } from '../Provider/AuthProvider';
@@ -9,6 +9,9 @@ import { AuthContext } from '../Provider/AuthProvider';
 const Login = () => {
     let [err, setErr] = useState(null);
     let { signInUser } = useContext(AuthContext);
+    let navigate = useNavigate();
+    let location = useLocation();
+    let from = location.state?.from?.pathname || '/';
 
     function handleSignIn(event) {
         event.preventDefault();
@@ -28,7 +31,8 @@ const Login = () => {
         signInUser(emailAccount, password)
         .then(result =>{
             let loggedInUser = result.user;
-            console.log(loggedInUser)
+            console.log(loggedInUser);
+            navigate(from, { replace: true})
         })
         .catch(err => setErr(err))
 
