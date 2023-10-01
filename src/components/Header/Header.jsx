@@ -5,10 +5,12 @@ import { Link } from 'react-router-dom';
 import { AuthContext } from '../Provider/AuthProvider';
 
 const Header = () => {
-    let {user, signOutUser } = useContext(AuthContext);
+    let { user, signOutUser } = useContext(AuthContext);
 
     let handleLogOut = () => {
-        signOutUser();
+        signOutUser()
+            .then(res => { })
+            .catch(err => console.log(err))
     }
     console.log(user)
     return (
@@ -18,11 +20,13 @@ const Header = () => {
                 <Link to="/">Shop</Link>
                 <Link to="/orders">Orders</Link>
                 <Link to="/inventory">Inventory</Link>
-                <Link to="/login">Login</Link>
-                <Link to="/register">Register</Link>
                 {
-                    
-                    user && <span>{user.email} <button onClick={handleLogOut}>Sign out</button></span>
+
+                    user ? <span className='userLogIn'>{user.email} <button onClick={handleLogOut}>Sign out</button></span> : <div>
+
+                        <Link to="/login">Login</Link>
+                        <Link to="/register">Register</Link>
+                    </div>
                 }
             </div>
         </nav>
