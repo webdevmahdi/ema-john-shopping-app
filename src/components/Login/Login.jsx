@@ -1,33 +1,44 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import './Login.css'
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
+import { AuthContext } from '../Provider/AuthProvider';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Login = () => {
-  let [err, setErr] = useState(null);
+    let [err, setErr] = useState(null);
+    let { signInUser } = useContext(AuthContext);
 
-  function handleSubmit(event) {
-    event.preventDefault();
+    function handleSignIn(event) {
+        event.preventDefault();
 
-    let form = event.target;
-    let emailAccount = form.email.value;
-    let password = form.password.value;
-    console.log(emailAccount, password);
+        let form = event.target;
+        let emailAccount = form.email.value;
+        let password = form.password.value;
+        console.log(emailAccount, password);
 
-    if (password.length < 6) {
-      setErr('Please input more than 6 character');
+        if (password.length < 6) {
+            setErr('Please input more than 6 character');
+        }
+        else {
+            setErr('')
+        }
+
+        signInUser(emailAccount, password)
+        .then(result =>{
+            let loggedInUser = result.user;
+            console.log(loggedInUser)
+        })
+        .catch(err => setErr(err))
+
+        form.reset()
+
     }
-    else{
-      setErr('')
-    }
-
-  }
     return (
         <div className="form-parent">
             <h2 className='form-title'>Login</h2>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSignIn}>
                 <div className='form-control'>
                     <label htmlFor="Email">Email</label>
                     <input type="email" name='email' placeholder='Enter email' required />

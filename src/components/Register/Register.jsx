@@ -1,11 +1,12 @@
-import React, { useContext, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import './Register.css'
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../Provider/AuthProvider';
 
+
 const Register = () => {
   let [error, setError] = useState(null);
-  let {signUp} = useContext(AuthContext);
+  let {createUser} = useContext(AuthContext);
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -18,19 +19,21 @@ const Register = () => {
 
     if (confirmPassword != password) {
       setError('Your password did not match!');
-
+      return
     }
     else if (password.length < 6) {
       setError('Please input more than 6 character');
+      return
     }
     else{
       setError('')
     }
 
-    signUp(email, password)
-    .then(result => console.log(result))
+    createUser(emailAccount, password)
+    .then(result => console.log(result.user))
     .catch(err => setError(err))
 
+    form.reset()
   }
 
   return (
