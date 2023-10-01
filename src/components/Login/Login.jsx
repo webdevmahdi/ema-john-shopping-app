@@ -8,6 +8,7 @@ import { AuthContext } from '../Provider/AuthProvider';
 
 const Login = () => {
     let [err, setErr] = useState(null);
+    let [show, setShow] = useState(false)
     let { signInUser } = useContext(AuthContext);
     let navigate = useNavigate();
     let location = useLocation();
@@ -29,12 +30,12 @@ const Login = () => {
         }
 
         signInUser(emailAccount, password)
-        .then(result =>{
-            let loggedInUser = result.user;
-            console.log(loggedInUser);
-            navigate(from, { replace: true})
-        })
-        .catch(err => setErr(err))
+            .then(result => {
+                let loggedInUser = result.user;
+                console.log(loggedInUser);
+                navigate(from, { replace: true })
+            })
+            .catch(err => setErr(err))
 
         form.reset()
 
@@ -49,7 +50,12 @@ const Login = () => {
                 </div>
                 <div className='form-control'>
                     <label htmlFor="password">Password</label>
-                    <input type="password" name='password' placeholder='Enter password' required />
+                    <input type={show ? "text" : "password" } name='password' placeholder='Enter password' required />
+                    <p onClick={() => setShow(!show)}>
+                        {
+                            show ? <small>Hide password</small> : <small>Show password</small>
+                        }
+                    </p>
                 </div>
                 <input className='submit' type="submit" value="Log in" />
             </form>
